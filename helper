@@ -889,9 +889,9 @@ function error {
 stty -echo -icanon min 1 time 0
 trap $(stty sane) EXIT
 #hostname="$(hostname)"
+finished=false
 
-
-while true; do
+while [[ $finished == false ]]; do
     select_option 'services' 'users' 'packages' 'clone' 'exit'
     clear
     case "$selection" in
@@ -922,7 +922,7 @@ while true; do
             ;;
         'exit')
             header 'HACK THE PLANET'
-            exit 0
+            finished=true
             ;;
     esac
 done
