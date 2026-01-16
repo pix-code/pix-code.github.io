@@ -903,7 +903,7 @@ while [[ $finished == false ]]; do
             fi
             ;;
         'users')
-            display 'users' "$(sudo passwd -Sa | awk '$2!="L" {print $1}')" "$users"
+            display 'users' "$(sudo passwd -S -a | awk '$2!="L" {print $1}')" "$users"
             ;;
         'packages')
             if [[ "$hostname" == 'bigbang' || "$hostname" == 'chernobyl' ]]; then
