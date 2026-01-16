@@ -888,10 +888,10 @@ function error {
 
 stty -echo -icanon min 1 time 0
 trap $(stty sane) EXIT
-#hostname="$(hostname)"
+hostname="$(hostname)"
+finished=false
 
-
-while true; do
+while [[ $finished == false ]]; do
     select_option 'services' 'users' 'packages' 'clone' 'exit'
     clear
     case "$selection" in
@@ -903,7 +903,7 @@ while true; do
             fi
             ;;
         'users')
-            display 'users' "$(sudo passwd -Sa | awk '$2!="L" {print $1}')" "$users"
+            display 'users' "$(sudo passwd -S -a | awk '$2!="L" {print $1}')" "$users"
             ;;
         'packages')
             if [[ "$hostname" == 'bigbang' || "$hostname" == 'chernobyl' ]]; then
@@ -922,7 +922,7 @@ while true; do
             ;;
         'exit')
             header 'HACK THE PLANET'
-            exit 0
+            finished=true
             ;;
     esac
 done
