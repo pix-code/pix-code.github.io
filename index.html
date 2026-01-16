@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 
-bigbangPkgs='
-ModemManager
+bigbangPkgs='ModemManager
 NetworkManager
 NetworkManager-adsl
 NetworkManager-bluetooth
@@ -311,8 +310,7 @@ xorg-x11-xauth
 xorg-x11-xinit
 zip
 zram-generator-defaults'
-bigbangServices='
-abrt-journal-core.service
+bigbangServices='abrt-journal-core.service
 abrt-oops.service
 abrt-xorg.service
 abrtd.service
@@ -345,8 +343,7 @@ udisks2.service
 upower.service
 user@1000.service'
 
-chernobylPkgs='
-aajohan-comfortaa-fonts
+chernobylPkgs='aajohan-comfortaa-fonts
 anaconda
 anaconda-install-env-deps
 anaconda-live
@@ -375,8 +372,7 @@ libreoffice-writer
 livesys-scripts
 memtest86+
 syslinux'
-chernobylServices='
-accounts-daemon.service
+chernobylServices='accounts-daemon.service
 auditd.service
 avahi-daemon.service
 chronyd.service
@@ -409,8 +405,7 @@ upower.service
 user@1000.service
 wpa_supplicant.service'
 
-dinoasteroidPkgs='
-apt-transport-https
+dinoasteroidPkgs='apt-transport-https
 base-files
 bash
 bsdutils
@@ -434,8 +429,7 @@ ubuntu-server-minimal
 ubuntu-standard
 util-linux
 wazuh-manager'
-dinoasteroidServices='
-cron.service
+dinoasteroidServices='cron.service
 dbus.service
 getty@tty1.service
 ModemManager.service
@@ -453,8 +447,7 @@ udisks2.service
 unattended-upgrades.service
 user@1000.service'
 
-enlightenmentPkgs='
-bsdutils
+enlightenmentPkgs='bsdutils
 dash
 debsums
 diffutils
@@ -495,8 +488,7 @@ ubuntu-standard
 ubuntu-wallpapers
 vsftpd
 wbritish'
-enlightenmentServices='
-accounts-daemon.service
+enlightenmentServices='accounts-daemon.service
 avahi-daemon.service
 colord.service
 cron.service
@@ -529,8 +521,7 @@ user@1000.service
 vsftpd.service
 wpa_supplicant.service'
 
-vikingraidsPkgs='
-adduser
+vikingraidsPkgs='adduser
 amd64-microcode
 apt
 apt-listchanges
@@ -742,8 +733,7 @@ whiptail
 xz-utils
 zlib1g
 zstd'
-vikingraidsServices='
-accounts-daemon.service
+vikingraidsServices='accounts-daemon.service
 avahi-daemon.service
 colord.service
 cron.service
@@ -770,8 +760,7 @@ upower.service
 user@1000.service
 wpa_supplicant.service'
 
-allowedUsers='
-drwho
+users='drwho
 martymcFly
 arthurdent
 sambeckett
@@ -888,7 +877,9 @@ function error {
 
 stty -echo -icanon min 1 time 0
 trap $(stty sane) EXIT
-hostname="$(hostname)"
+#hostname="$(hostname)"
+services="${hostname}Services"
+pkgs="${hostname}Pkgs"
 finished=false
 
 while [[ $finished == false ]]; do
@@ -897,7 +888,7 @@ while [[ $finished == false ]]; do
     case "$selection" in
         'services')
             if [[ "$hostname" == 'bigbang' || "$hostname" == 'chernobyl' || "$hostname" == 'dinoasteroid' || "$hostname" == 'enlightenment' || "$hostname" == 'vikingraids' ]]; then
-                display 'services' "$(systemctl list-units --type=service --state=running --no-pager --quiet | cut -d " " -f 3)" "${hostname}Services"
+                display 'services' "$(systemctl list-units --type=service --state=running --no-pager --quiet | cut -d " " -f 3)" "${!services}"
             else
                 error
             fi
@@ -907,9 +898,9 @@ while [[ $finished == false ]]; do
             ;;
         'packages')
             if [[ "$hostname" == 'bigbang' || "$hostname" == 'chernobyl' ]]; then
-                display 'packages' "$(dnf repoquery --userinstalled | cut -d ':' -f 1 | sed 's/..$//')" "${hostname}Pkgs"
+                display 'packages' "$(dnf repoquery --userinstalled | cut -d ':' -f 1 | sed 's/..$//')" "${!pkgs}"
             elif [[ "$hostname" == 'dinoasteroid' || "$hostname" == 'enlightenment' || "$hostname" == 'vikingraids' ]]; then
-                display 'packages' "$(apt-mark showmanual)" "${hostname}Pkgs"
+                display 'packages' "$(apt-mark showmanual)" "${!pkgs}"
             else
                 error
             fi
