@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+IFS=',' read -a args <<< "$2"
+
+for arg in "${args[@]}"; do
+    if [[ -z "$3" ]]; then
+        echo -e "[$1 $arg]"
+    else
+        echo -e "[$1 $arg $3]"
+    fi
+    $1 $arg $3
+    echo
+done
+
