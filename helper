@@ -1,91 +1,5 @@
 #!/usr/bin/env bash
 
-function get_key {
-    IFS= read -r -n1 -s key
-
-    if [[ $key == $'\e' ]]; then
-        IFS= read -r -n2 -s rest
-        # printf 'You pressed: %s  (decimal=%d, hex=0x%02X)\n' "$(printf '%q' "$key")" "'$key" "'$key"
-        key+=$rest
-        case "$key" in
-            $'\e[A')
-                key='up'
-                ;;
-            $'\e[B')
-                key='down'
-                ;;
-            $'\e[C')
-                key='right'
-                ;;
-            $'\e[D')
-                key='left'
-                ;;
-            $'\\')
-                key='space'
-                ;;
-        esac
-    else
-        # printf 'You pressed: %s  (decimal=%d, hex=0x%02X)\n' "$(printf '%q' "$key")" "'$key" "'$key"
-        case "$key" in
-            '')
-                key='return'
-                ;;
-            ' ')
-                key='space'
-                ;;
-        esac
-    fi
-
-    echo $key
-}
-
-function select_option {
-    options=("$@")
-    index=0
-    complete=false
-
-    while [[ $complete == false ]]; do
-        clear
-        echo 'Select an option:'
-
-        for i in "${!options[@]}"; do
-            option="${options[$i]}"
-            if [[ $i == $index ]]; then
-                arrow=">"
-            else
-                arrow=" "
-            fi
-
-            echo "$arrow $option"
-        done
-
-        case "$(get_key)" in
-            'down' | 'e')
-                if (( $index < "${#options}"-1)); then
-                    ((index++))
-                fi
-                ;;
-            'up' | 'u')
-                if [[ $index > 0 ]]; then
-                    ((index--))
-                fi
-                ;;
-            'return' | 'space')
-                complete=true
-                ;;
-        esac
-    done
-    selection="${options[$index]}"
-}
-
-function header {
-    echo "====== [ $1 ] ======"
-}
-
-stty -echo -icanon min 1 time 0
-trap $(stty sane) EXIT
-#hostname="$(hostname)"
-
 bigbangPkgs='
 ModemManager
 NetworkManager
@@ -856,7 +770,7 @@ upower.service
 user@1000.service
 wpa_supplicant.service'
 
-users='
+allowedUsers='
 drwho
 martymcFly
 arthurdent
@@ -868,25 +782,142 @@ tonystark
 drstrange
 bartallen'
 
+function get_key {
+    IFS= read -r -n1 -s key
+
+    if [[ $key == $'\e' ]]; then
+        IFS= read -r -n2 -s rest
+        # printf 'You pressed: %s  (decimal=%d, hex=0x%02X)\n' "$(printf '%q' "$key")" "'$key" "'$key"
+        key+=$rest
+        case "$key" in
+            $'\e[A')
+                key='up'
+                ;;
+            $'\e[B')
+                key='down'
+                ;;
+            $'\e[C')
+                key='right'
+                ;;
+            $'\e[D')
+                key='left'
+                ;;
+            $'\\')
+                key='space'
+                ;;
+        esac
+    else
+        # printf 'You pressed: %s  (decimal=%d, hex=0x%02X)\n' "$(printf '%q' "$key")" "'$key" "'$key"
+        case "$key" in
+            '')
+                key='return'
+                ;;
+            ' ')
+                key='space'
+                ;;
+        esac
+    fi
+
+    echo $key
+}
+
+function select_option {
+    options=("$@")
+    index=0
+    complete=false
+
+    while [[ $complete == false ]]; do
+        clear
+        echo 'Select an option:'
+
+        for i in "${!options[@]}"; do
+            option="${options[$i]}"
+            if [[ $i == $index ]]; then
+                arrow=">"
+            else
+                arrow=" "
+            fi
+
+            echo "$arrow $option"
+        done
+
+        case "$(get_key)" in
+            'down' | 'e')
+                if (( $index < "${#options[@]}"-1)); then
+                    ((index++))
+                fi
+                ;;
+            'up' | 'u')
+                if [[ $index > 0 ]]; then
+                    ((index--))
+                fi
+                ;;
+            'return' | 'space')
+                complete=true
+                ;;
+        esac
+    done
+    selection="${options[$index]}"
+}
+
+function header {
+    echo "====== [ $1 ] ======"
+}
+
+function subh {
+    echo "---    < $1 >    ---"
+}
+
+function display {
+    header "$1"
+
+    subh "all $1"
+    echo "$2"
+
+    subh "filtered $1"
+    echo "$2" | grep -v "$3"
+
+    echo
+    get_key
+}
+
+function error {
+    header "HOSTNAME NOT VALID!"
+    get_key
+}
+
+stty -echo -icanon min 1 time 0
+trap $(stty sane) EXIT
+#hostname="$(hostname)"
+
+
 while true; do
-    select_option 'services' 'users' 'packages' 'exit'
+    select_option 'services' 'users' 'packages' 'clone' 'exit'
     clear
     case "$selection" in
         'services')
-            header 'services'
-            systemctl list-units --type=service --state=running --no-pager --quiet | cut -d " " -f 3
-            get_key
+            if [[ "$hostname" == 'bigbang' || "$hostname" == 'chernobyl' || "$hostname" == 'dinoasteroid' || "$hostname" == 'enlightenment' || "$hostname" == 'vikingraids' ]]; then
+                display 'services' "$(systemctl list-units --type=service --state=running --no-pager --quiet | cut -d " " -f 3)" "${hostname}Services"
+            else
+                error
+            fi
             ;;
         'users')
-            header 'users'
-            sudo passwd -S -a | awk '$2!="L" {print $1}' | grep -v "$users"
-            get_key
+            display 'users' "$(sudo passwd -Sa | awk '$2!="L" {print $1}')" "$users"
             ;;
         'packages')
-            header "packages $hostname"
-            if [[ "$hostname" == 'bigbang' ]]; then
-                dnf repoquery --userinstalled | cut -d ':' -f 1 | sed 's/..$//' | grep -v "$bigbangPkgs"
+            if [[ "$hostname" == 'bigbang' || "$hostname" == 'chernobyl' ]]; then
+                display 'packages' "$(dnf repoquery --userinstalled | cut -d ':' -f 1 | sed 's/..$//')" "${hostname}Pkgs"
+            elif [[ "$hostname" == 'dinoasteroid' || "$hostname" == 'enlightenment' || "$hostname" == 'vikingraids' ]]; then
+                display 'packages' "$(apt-mark showmanual)" "${hostname}Pkgs"
+            else
+                error
             fi
+            ;;
+        'clone')
+            header 'cloning..'
+            git clone https://github.com/pix-code/pix-code.github.io
+            echo -e '\ndone!\n'
             get_key
             ;;
         'exit')
