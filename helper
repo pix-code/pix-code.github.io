@@ -888,7 +888,7 @@ function error {
 
 stty -echo -icanon min 1 time 0
 trap $(stty sane) EXIT
-#hostname="$(hostname)"
+hostname="$(hostname)"
 finished=false
 
 while [[ $finished == false ]]; do
