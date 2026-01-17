@@ -965,7 +965,7 @@ while [[ $finished == false ]]; do
             read args
             if [[ "$os" == 'redhat' ]]; then
                 sudo dnf remove "$args"
-            elif [[ "$os" == 'debian']]; then
+            elif [[ "$os" == 'debian' ]]; then
                 sudo apt remove "$args"
             fi
             echo -e 'done!'
@@ -976,7 +976,7 @@ while [[ $finished == false ]]; do
             read args
             if [[ "$os" == 'redhat' ]]; then
                 sudo dnf reinstall "$args"
-            elif [[ "$os" == 'debian']]; then
+            elif [[ "$os" == 'debian' ]]; then
                 sudo apt install --reinstall "$args"
             fi
             echo -e 'done!'
