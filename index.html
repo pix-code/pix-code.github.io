@@ -903,7 +903,7 @@ while [[ $finished == false ]]; do
             display 'services' "$(systemctl list-units --type=service --state=running --no-pager --quiet | cut -d " " -f 3)" "${!services}"
             ;;
         'users')
-            display 'users' "$(sudo cat /etc/shadow | grep -v '!' | cut -d ':' -f 1)" "$users"
+            display 'users' "$(sudo cat /etc/shadow | grep -Ev ':\!|:\*' | cut -d ':' -f 1)" "$users"
             ;;
         'packages')
             if [[ "$os" == 'redhat' ]]; then
