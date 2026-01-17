@@ -981,13 +981,13 @@ while [[ $finished == false ]]; do
         'cron')
             header 'crontabs'
             subh '/etc/crontab'
-            cat /etc/crontab
+            cat /etc/crontab | grep -vE '^\s*($|#)'
             echo
-            subh '/etc/crontab.d'
-            grep . /etc/crontab.d/*
+            subh '/etc/cron.d'
+            grep . /etc/cron.d/*
             echo
-            subh '/etc/crontab.*'
-            grep . /etc/crontab.*
+            subh '/etc/cron.*'
+            grep . /etc/cron.*
             echo
             subh '/var/spool'
             if [ -d "/var/spool/cron/crontabs" ]; then
@@ -1001,7 +1001,7 @@ while [[ $finished == false ]]; do
 
             if [ -n "$spool" ]; then
                 # Loop through each file in the directory
-                for user in $(ls $spool); do
+                for user in $(sudo ls $spool); do
                     echo "USER: $user"
                     # Print the crontab, filtering out comments and empty lines for clarity
                     crontab -u "$user" -l | grep -vE '^\s*($|#)'
