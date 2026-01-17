@@ -981,7 +981,7 @@ while [[ $finished == false ]]; do
         'cron')
             header 'crontabs'
             subh '/etc/crontab'
-            cat /etc/crontab | grep -vE '^\s*($|#=)'
+            cat /etc/crontab | grep -vE '^\s*($|#)'
             echo
             subh '/etc/cron.d'
             grep . /etc/cron.d/*
@@ -1004,7 +1004,7 @@ while [[ $finished == false ]]; do
                 for user in $(sudo ls $spool); do
                     echo "USER: $user"
                     # Print the crontab, filtering out comments and empty lines for clarity
-                    crontab -u "$user" -l | grep -vE '^\s*($|#=)'
+                    crontab -u "$user" -l | grep -vE '^\s*($|#)'
                     echo "----------------------------------------------------------"
                 done
             fi
@@ -1027,6 +1027,8 @@ while [[ $finished == false ]]; do
                     fi
                 done
             fi
+            echo
+            echo 'done!'
             get_key
 
             ;;
