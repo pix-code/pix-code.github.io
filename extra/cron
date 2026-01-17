@@ -1,0 +1,74 @@
+#!/bin/bash
+
+# Check if running as root
+if [ "$EUID" -ne 0 ]; then
+  echo "Error: This script must be run as root to see all user crontabs."
+  exit 1
+fi
+
+echo "=========================================================="
+echo " FULL SYSTEM CRON JOB REPORT - $(date)"
+echo "=========================================================="
+echo ""
+
+# 1. List User Crontabs (Standard users)
+# Typically located in /var/spool/cron/crontabs or /var/spool/cron
+echo "--- [ USER CRONTABS ] ------------------------------------"
+
+# Detect the spool directory
+if [ -d "/var/spool/cron/crontabs" ]; then
+    SPOOL_DIR="/var/spool/cron/crontabs"
+elif [ -d "/var/spool/cron" ]; then
+    SPOOL_DIR="/var/spool/cron"
+else
+    echo "Could not locate cron spool directory."
+    SPOOL_DIR=""
+fi
+
+if [ -n "$SPOOL_DIR" ]; then
+    # Loop through each file in the directory
+    for user in $(ls $SPOOL_DIR); do
+        echo "USER: $user"
+        # Print the crontab, filtering out comments and empty lines for clarity
+        crontab -u "$user" -l | grep -vE '^\s*($|#)'
+        echo "----------------------------------------------------------"
+    done
+fi
+echo ""
+
+# 2. List System-Wide Crontabs (/etc/crontab)
+echo "--- [ SYSTEM-WIDE (/etc/crontab) ] -----------------------"
+if [ -f /etc/crontab ]; then
+    cat /etc/crontab | grep -vE '^\s*($|#)'
+else
+    echo "/etc/crontab not found."
+fi
+echo ""
+
+# 3. List Scripts in /etc/cron.d/
+echo "--- [ /etc/cron.d/ ] -------------------------------------"
+if [ -d /etc/cron.d ]; then
+    for file in /etc/cron.d/*; do
+        if [ -f "$file" ]; then
+            echo "FILE: $file"
+            cat "$file" | grep -vE '^\s*($|#)'
+            echo "----------------------------------------------------------"
+        fi
+    done
+fi
+echo ""
+
+# 4. List Daily/Hourly/Weekly/Monthly Scripts
+# These are just lists of filenames, as they are triggered by anacron or crontab
+echo "--- [ PERIODIC SCRIPTS ] ---------------------------------"
+for dir in /etc/cron.hourly /etc/cron.daily /etc/cron.weekly /etc/cron.monthly; do
+    if [ -d "$dir" ]; then
+        echo "Directory: $dir"
+        ls -1 "$dir"
+        echo ""
+    fi
+done
+
+echo "=========================================================="
+echo " END OF REPORT"
+echo "=========================================================="
