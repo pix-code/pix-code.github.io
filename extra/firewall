@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Check if the script is run as root
+if [ "$EUID" -ne 0 ]; then
+  echo "Error: Please run as root (use sudo)."
+  exit 1
+fi
+
+# Check if firewalld is running
+if ! systemctl is-active --quiet firewalld; then
+    echo "Error: firewalld is not running."
+    exit 1
+fi
+
+echo "========================================================"
+echo " FIREWALLD STATUS REPORT - $(date)"
+echo "========================================================"
+echo ""
+
+# 1. Show Active Zones (Interfaces currently assigned to a zone)
+echo "--- [ ACTIVE ZONES ] -----------------------------------"
+echo "These zones are currently processing traffic:"
+echo ""
+firewall-cmd --get-active-zones
+echo ""
+
+# 2. Show Default Zone
+echo "--- [ DEFAULT ZONE ] -----------------------------------"
+echo "Traffic not matching other zones goes here:"
+echo ""
+firewall-cmd --get-default-zone
+echo ""
+
+# 3. List All Configurations for All Zones
+echo "--- [ DETAILED RULES (ALL ZONES) ] ---------------------"
+firewall-cmd --list-all-zones
+
+# 4. Check for Direct Rules (Custom raw rules)
+# These are often hidden from standard views but apply first.
+DIRECT_RULES=$(firewall-cmd --direct --get-all-rules)
+if [ -n "$DIRECT_RULES" ]; then
+    echo ""
+    echo "--- [ DIRECT/RAW RULES ] -------------------------------"
+    echo "$DIRECT_RULES"
+else
+    echo ""
+    echo "--- [ DIRECT/RAW RULES ] -------------------------------"
+    echo "No direct rules found."
+fi
+
+echo ""
+echo "========================================================"
+echo " END OF REPORT"
+echo "========================================================"

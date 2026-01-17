@@ -938,7 +938,6 @@ while [[ $finished == false ]]; do
             subh 'version'
             echo "$VERSION"
             echo
-
             subh 'open ports'
             ss -tuln | awk '{print $5}'
             get_key
