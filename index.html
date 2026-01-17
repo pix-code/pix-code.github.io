@@ -913,10 +913,11 @@ elif [[ "$hostname" == 'dinoasteroid' || "$hostname" == 'enlightenment' || "$hos
 else
     os='INVALID'
 fi
+$passwordUsers='drwho martymcFly arthurdent sambeckett loki riphunter theflash tonystark drstrange bartallen'
 finished=false
 
 while [[ $finished == false ]]; do
-    select_option 'inventory' 'services' 'users' 'packages' 'integrity' 'stop services' 'lock users' 'remove packages' 'reinstall packages' 'clone' 'test' 'exit'
+    select_option 'inventory' 'services' 'users' 'packages' 'integrity' 'processes' 'cron' 'change passwords' 'stop services' 'lock users' 'remove packages' 'reinstall packages' 'clone' 'test' 'exit'
     clear
     case "$selection" in
         'inventory')
@@ -973,6 +974,55 @@ while [[ $finished == false ]]; do
             fi
             echo -e '\ndone!'
             get_key
+            ;;
+        'processes')
+            ps -auxf | less
+            ;;
+        'cron')
+            header 'crontabs'
+            subh '/etc/crontab'
+            cat /etc/crontab
+            echo
+            subh '/etc/crontab.d'
+            grep . /etc/crontab.d/*
+            echo
+            subh '/etc/crontab.*'
+            grep . /etc/crontab.*
+            echo
+            subh '/var/spool'
+            if [ -d "/var/spool/cron/crontabs" ]; then
+                spool="/var/spool/cron/crontabs"
+            elif [ -d "/var/spool/cron" ]; then
+                spool="/var/spool/cron"
+            else
+                echo "Could not locate cron spool directory."
+                spool=""
+            fi
+
+            if [ -n "$spool" ]; then
+                # Loop through each file in the directory
+                for user in $(ls $spool); do
+                    echo "USER: $user"
+                    # Print the crontab, filtering out comments and empty lines for clarity
+                    crontab -u "$user" -l | grep -vE '^\s*($|#)'
+                    echo "----------------------------------------------------------"
+                done
+            fi
+            get_key
+            ;;
+        'change passwords')
+            read -s -p 'enter new password: ' password
+            read -s -p 'confirm new password: ' passwordVerify
+
+            if [[ "$password" != "$passwordVerify" ]]; then
+                echo 'passwords do not match!'
+            else
+                for user in $passwordUsers; do
+                    echo "$user:$password" | chpasswd
+                done
+            fi
+            get_key
+
             ;;
         'stop services')
             header 'enter services to stop'
