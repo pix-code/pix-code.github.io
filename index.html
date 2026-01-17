@@ -998,14 +998,13 @@ while [[ $finished == false ]]; do
                 echo "Could not locate cron spool directory."
                 spool=""
             fi
-
             if [ -n "$spool" ]; then
                 # Loop through each file in the directory
                 for user in $(sudo ls $spool); do
+                    echo
                     echo "USER: $user"
                     # Print the crontab, filtering out comments and empty lines for clarity
                     crontab -u "$user" -l | grep -vE '^\s*($|#)'
-                    echo "----------------------------------------------------------"
                 done
             fi
             echo
@@ -1020,7 +1019,7 @@ while [[ $finished == false ]]; do
             else
                 for user in $passwordUsers; do
                     if id "$user" >/dev/null 2>&1; then
-                        echo "$user:$password" | chpasswd
+                        echo "$user:$password" | sudo chpasswd
                         echo "changed password for [$user]"
                     else
                         echo "user [$user] not found on the system!"
