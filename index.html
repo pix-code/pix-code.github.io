@@ -916,8 +916,10 @@ while [[ $finished == false ]]; do
             ;;
         'integrity')
             if [[ "$os" == 'redhat' ]]; then
+                header 'running rpm -Va'
                 rpm -Va
             elif [[ "$os" == 'debian' ]]; then
+                header 'running debsums'
                 debsums
 
                 if [[ "$?" != 0 ]]; then
