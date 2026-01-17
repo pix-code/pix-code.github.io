@@ -1019,7 +1019,12 @@ while [[ $finished == false ]]; do
                 echo 'passwords do not match!'
             else
                 for user in $passwordUsers; do
-                    echo "$user:$password" | chpasswd
+                    if id "$user" >/dev/null 2>&1; then
+                        echo "$user:$password" | chpasswd
+                        echo "changed password for [$user]"
+                    else
+                        echo "user [$user] not found on the system!"
+                    fi
                 done
             fi
             get_key
