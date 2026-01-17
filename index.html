@@ -916,11 +916,15 @@ while [[ $finished == false ]]; do
             ;;
         'integrity')
             if [[ "$os" == 'redhat' ]]; then
-                header 'running rpm -Va'
-                rpm -Va
+                header 'running rpm'
+                sudo rpm -Va
             elif [[ "$os" == 'debian' ]]; then
                 header 'running debsums'
-                debsums
+                if [[ -z "$(which debsums)" ]]; then
+                    sudo apt install debsums
+                fi
+
+                sudo debsums -s
 
                 if [[ "$?" != 0 ]]; then
                     echo 'debsums not found! Please install it before continuing'
