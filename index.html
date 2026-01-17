@@ -769,7 +769,8 @@ riphunter
 theflash
 tonystark
 drstrange
-bartallen'
+bartallen
+whiteteam'
 
 function get_key {
     IFS= read -r -n1 -s key
@@ -877,6 +878,20 @@ function error {
     get_key
 }
 
+function rpt {
+    IFS=' ' read -a args <<< "$2"
+
+    for arg in "${args[@]}"; do
+        if [[ -z "$3" ]]; then
+            echo -e "[$1 $arg]"
+        else
+            echo -e "[$1 $arg $3]"
+        fi
+        $1 $arg $3
+        echo
+    done
+}
+
 stty -echo -icanon min 1 time 0
 trap $(stty sane) EXIT
 if [[ -z $1 ]]; then
@@ -896,7 +911,7 @@ fi
 finished=false
 
 while [[ $finished == false ]]; do
-    select_option 'services' 'users' 'packages' 'integrity' 'clone' 'test' 'exit'
+    select_option 'services' 'users' 'packages' 'integrity' 'stop services' 'lock users' 'remove packages' 'reinstall packages' 'clone' 'test' 'exit'
     clear
     case "$selection" in
         'services')
@@ -922,12 +937,49 @@ while [[ $finished == false ]]; do
                 if [[ -z "$(which debsums)" ]]; then
                     header 'installing debsums'
                     sudo apt install debsums
-                    echo
+                    clear
                 fi
 
                 header 'running debsums'
                 sudo debsums -s
             fi
+            echo -e '\ndone!'
+            get_key
+            ;;
+        'stop services')
+            header 'enter services to stop'
+            read args
+            rpt 'sudo systemctl disable --now' "$args"
+            echo -e 'done!'
+            get_key
+            ;;
+        'lock users')
+            header 'enter users to lock'
+            read args
+            rpt 'sudo passwd -dl' "$args" "$3"
+            echo -e 'done!'
+            get_key
+            ;;
+        'uninstall packages')
+            header 'enter packages to uninstall'
+            read args
+            if [[ "$os" == 'redhat' ]]; then
+                sudo dnf remove "$args"
+            elif [[ "$os" == 'debian']]; then
+                sudo apt remove "$args"
+            fi
+            echo -e 'done!'
+            get_key
+            ;;
+        'reinstall packages')
+            header 'enter packages to reinstall'
+            read args
+            if [[ "$os" == 'redhat' ]]; then
+                sudo dnf reinstall "$args"
+            elif [[ "$os" == 'debian']]; then
+                sudo apt install --reinstall "$args"
+            fi
+            echo -e 'done!'
             get_key
             ;;
         'clone')
