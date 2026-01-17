@@ -919,16 +919,14 @@ while [[ $finished == false ]]; do
                 header 'running rpm'
                 sudo rpm -Va
             elif [[ "$os" == 'debian' ]]; then
-                header 'running debsums'
                 if [[ -z "$(which debsums)" ]]; then
+                    header 'installing debsums'
                     sudo apt install debsums
+                    echo
                 fi
 
+                header 'running debsums'
                 sudo debsums -s
-
-                if [[ "$?" != 0 ]]; then
-                    echo 'debsums not found! Please install it before continuing'
-                fi
             fi
             get_key
             ;;
