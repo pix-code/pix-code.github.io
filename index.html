@@ -987,7 +987,7 @@ while [[ $finished == false ]]; do
             grep . /etc/cron.d/*
             echo
             subh '/etc/cron.*'
-            grep . /etc/cron.*
+            grep . /etc/cron.*/*
             echo
             subh '/var/spool'
             if [ -d "/var/spool/cron/crontabs" ]; then
