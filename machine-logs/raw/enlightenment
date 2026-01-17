@@ -1,0 +1,73 @@
+  accounts-daemon.service       loaded active running Accounts Service
+  avahi-daemon.service          loaded active running Avahi mDNS/DNS-SD Stack
+  colord.service                loaded active running Manage, Install and Generate Color Profiles
+  cron.service                  loaded active running Regular background program processing daemon
+  cups-browsed.service          loaded active running Make remote CUPS printers available locally
+  cups.service                  loaded active running CUPS Scheduler
+  dbus.service                  loaded active running D-Bus System Message Bus
+  gdm.service                   loaded active running GNOME Display Manager
+  gnome-remote-desktop.service  loaded active running GNOME Remote Desktop
+  kerneloops.service            loaded active running Tool to automatically collect and submit kernel crash signatures
+  ModemManager.service          loaded active running Modem Manager
+  NetworkManager.service        loaded active running Network Manager
+  packagekit.service            loaded active running PackageKit Daemon
+  polkit.service                loaded active running Authorization Manager
+  power-profiles-daemon.service loaded active running Power Profiles daemon
+  rsyslog.service               loaded active running System Logging Service
+  rtkit-daemon.service          loaded active running RealtimeKit Scheduling Policy Service
+  snapd.service                 loaded active running Snap Daemon
+  spice-vdagentd.service        loaded active running Agent daemon for Spice guests
+  switcheroo-control.service    loaded active running Switcheroo Control Proxy service
+  systemd-journald.service      loaded active running Journal Service
+  systemd-logind.service        loaded active running User Login Management
+  systemd-oomd.service          loaded active running Userspace Out-Of-Memory (OOM) Killer
+  systemd-resolved.service      loaded active running Network Name Resolution
+  systemd-timesyncd.service     loaded active running Network Time Synchronization
+  systemd-udevd.service         loaded active running Rule-based Manager for Device Events and Files
+  udisks2.service               loaded active running Disk Manager
+  unattended-upgrades.service   loaded active running Unattended Upgrades Shutdown
+  upower.service                loaded active running Daemon for power management
+  user@1000.service             loaded active running User Manager for UID 1000
+  vsftpd.service                loaded active running vsftpd FTP server
+  wpa_supplicant.service        loaded active running WPA supplicant
+bsdutils
+dash
+debsums
+diffutils
+findutils
+grep
+grub-pc
+gzip
+hostname
+htop
+ibus-table-cangjie-big
+ibus-table-cangjie3
+ibus-table-cangjie5
+init
+language-pack-en
+language-pack-en-base
+language-pack-gnome-en
+language-pack-gnome-en-base
+libchewing3
+libchewing3-data
+libm17n-0
+libmarisa0
+libopencc-data
+libopencc1.1
+libotf1
+libpinyin-data
+libpinyin15
+linux-generic-hwe-24.04
+login
+m17n-db
+ncurses-base
+ncurses-bin
+openssh-server
+python3-netifaces
+ubuntu-desktop-minimal
+ubuntu-minimal
+ubuntu-restricted-addons
+ubuntu-standard
+ubuntu-wallpapers
+vsftpd
+wbritish

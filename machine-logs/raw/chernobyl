@@ -1,0 +1,61 @@
+aajohan-comfortaa-fonts-0:3.001-10.el9.noarch
+anaconda-0:34.25.5.17-1.el9_6.rocky.0.3.x86_64
+anaconda-install-env-deps-0:34.25.5.17-1.el9_6.rocky.0.3.x86_64
+anaconda-live-0:34.25.5.17-1.el9_6.rocky.0.3.x86_64
+chkconfig-0:1.24-2.el9.x86_64
+docker-ce-3:28.5.1-1.el9.x86_64
+dracut-live-0:057-88.git20250311.el9_6.x86_64
+efi-filesystem-0:6-2.el9_0.noarch
+efivar-libs-0:38-3.el9.x86_64
+ftp-0:0.17-89.el9.x86_64
+grub2-common-1:2.06-104.el9_6.noarch
+grub2-pc-modules-1:2.06-104.el9_6.noarch
+grub2-tools-minimal-1:2.06-104.el9_6.x86_64
+initscripts-0:10.11.8-4.el9.x86_64
+kernel-0:5.14.0-570.17.1.el9_6.x86_64
+kernel-0:5.14.0-570.55.1.el9_6.x86_64
+kernel-modules-0:5.14.0-570.17.1.el9_6.x86_64
+kernel-modules-0:5.14.0-570.55.1.el9_6.x86_64
+kernel-modules-extra-0:5.14.0-570.17.1.el9_6.x86_64
+kernel-modules-extra-0:5.14.0-570.55.1.el9_6.x86_64
+langpacks-en-0:3.0-16.el9.noarch
+libreoffice-calc-1:7.1.8.1-15.el9_5.x86_64
+libreoffice-emailmerge-1:7.1.8.1-15.el9_5.x86_64
+libreoffice-graphicfilter-1:7.1.8.1-15.el9_5.x86_64
+libreoffice-impress-1:7.1.8.1-15.el9_5.x86_64
+libreoffice-writer-1:7.1.8.1-15.el9_5.x86_64
+livesys-scripts-0:0.4.3-2.el9.noarch
+memtest86+-0:5.31-0.4.beta.el9.x86_64
+syslinux-0:6.04-0.20.el9.x86_64
+  accounts-daemon.service    loaded active running Accounts Service
+  auditd.service             loaded active running Security Auditing Service
+  avahi-daemon.service       loaded active running Avahi mDNS/DNS-SD Stack
+  chronyd.service            loaded active running NTP client/server
+  colord.service             loaded active running Manage, Install and Generate Color Profiles
+  containerd.service         loaded active running containerd container runtime
+  crond.service              loaded active running Command Scheduler
+  dbus-broker.service        loaded active running D-Bus System Message Bus
+  docker.service             loaded active running Docker Application Container Engine
+  firewalld.service          loaded active running firewalld - dynamic firewall daemon
+  fwupd.service              loaded active running Firmware update daemon
+  gdm.service                loaded active running GNOME Display Manager
+  gssproxy.service           loaded active running GSSAPI Proxy Daemon
+  irqbalance.service         loaded active running irqbalance daemon
+  ModemManager.service       loaded active running Modem Manager
+  NetworkManager.service     loaded active running Network Manager
+  polkit.service             loaded active running Authorization Manager
+  rpcbind.service            loaded active running RPC Bind
+  rsyslog.service            loaded active running System Logging Service
+  rtkit-daemon.service       loaded active running RealtimeKit Scheduling Policy Service
+  spice-vdagentd.service     loaded active running Agent daemon for Spice guests
+  sssd-kcm.service           loaded active running SSSD Kerberos Cache Manager
+  switcheroo-control.service loaded active running Switcheroo Control Proxy service
+  systemd-journald.service   loaded active running Journal Service
+  systemd-logind.service     loaded active running User Login Management
+  systemd-udevd.service      loaded active running Rule-based Manager for Device Events and Files
+  tuned-ppd.service          loaded active running PPD-to-TuneD API Translation Daemon
+  tuned.service              loaded active running Dynamic System Tuning Daemon
+  udisks2.service            loaded active running Disk Manager
+  upower.service             loaded active running Daemon for power management
+  user@1000.service          loaded active running User Manager for UID 1000
+  wpa_supplicant.service     loaded active running WPA supplicant
