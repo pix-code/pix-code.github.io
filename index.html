@@ -760,7 +760,13 @@ upower.service
 user@1000.service
 wpa_supplicant.service'
 
-users='drwho
+users='whiteteam
+blackteam
+grayteam
+grayteam
+dd-dog
+datadog
+drwho
 martymcFly
 arthurdent
 sambeckett
@@ -769,8 +775,7 @@ riphunter
 theflash
 tonystark
 drstrange
-bartallen
-whiteteam'
+bartallen'
 
 function get_key {
     IFS= read -r -n1 -s key
@@ -911,14 +916,38 @@ fi
 finished=false
 
 while [[ $finished == false ]]; do
-    select_option 'services' 'users' 'packages' 'integrity' 'stop services' 'lock users' 'remove packages' 'reinstall packages' 'clone' 'test' 'exit'
+    select_option 'inventory' 'services' 'users' 'packages' 'integrity' 'stop services' 'lock users' 'remove packages' 'reinstall packages' 'clone' 'test' 'exit'
     clear
     case "$selection" in
+        'inventory')
+            header "inventory of $hostname"
+            subh 'users'
+            cat /etc/passwd | cut -d ":" -f 1 | tr '\n' ' '
+            echo
+            echo
+            subh 'hostname'
+            hostname
+            echo
+            subh 'ip'
+            hostname -i
+            echo
+            subh 'operating system'
+            source /etc/os-release
+            echo "$NAME"
+            echo
+            subh 'version'
+            echo "$VERSION"
+            echo
+
+            subh 'open ports'
+            ss -tuln | awk '{print $5}'
+            get_key
+            ;;
         'services')
             display 'services' "$(systemctl list-units --type=service --state=running --no-pager --quiet | cut -d " " -f 3)" "${!services}"
             ;;
         'users')
-            display 'unlocked users' "$(sudo cat /etc/shadow | grep -Ev ':\!|:\*' | cut -d ':' -f 1)" "$users"
+            display 'unlocked users' "$(sudo cat /etc/shadow | grep -Ev ':!|:\*' | cut -d ':' -f 1)" "$users"
             ;;
         'packages')
             if [[ "$os" == 'redhat' ]]; then
