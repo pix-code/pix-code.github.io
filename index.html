@@ -1013,7 +1013,9 @@ while [[ $finished == false ]]; do
             ;;
         'change passwords')
             read -s -p 'enter new password: ' password
+            echo
             read -s -p 'confirm new password: ' passwordVerify
+            echo
 
             if [[ "$password" != "$passwordVerify" ]]; then
                 echo 'passwords do not match!'
