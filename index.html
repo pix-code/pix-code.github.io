@@ -863,10 +863,12 @@ function display {
     subh "all $1"
     echo "$2"
 
-    subh "filtered $1"
-    echo "$2" | grep -v "$3"
+    if [[ -n "$3" ]]; then
+        echo
+        subh "filtered $1"
+        echo "$2" | grep -v "$3"
+    fi
 
-    echo
     get_key
 }
 
@@ -877,39 +879,76 @@ function error {
 
 stty -echo -icanon min 1 time 0
 trap $(stty sane) EXIT
-#hostname="$(hostname)"
+if [[ -z $1 ]]; then
+    hostname="$(hostname)"
+else
+    hostname="$1"
+fi
 services="${hostname}Services"
 pkgs="${hostname}Pkgs"
+if [[ "$hostname" == 'bigbang' || "$hostname" == 'chernobyl' ]]; then
+    os='redhat'
+elif [[ "$hostname" == 'dinoasteroid' || "$hostname" == 'enlightenment' || "$hostname" == 'vikingraids' ]]; then
+    os='debian'
+else
+    os='INVALID'
+fi
 finished=false
 
 while [[ $finished == false ]]; do
-    select_option 'services' 'users' 'packages' 'clone' 'exit'
+    select_option 'services' 'users' 'packages' 'integrity' 'clone' 'test' 'exit'
     clear
     case "$selection" in
         'services')
-            if [[ "$hostname" == 'bigbang' || "$hostname" == 'chernobyl' || "$hostname" == 'dinoasteroid' || "$hostname" == 'enlightenment' || "$hostname" == 'vikingraids' ]]; then
-                display 'services' "$(systemctl list-units --type=service --state=running --no-pager --quiet | cut -d " " -f 3)" "${!services}"
-            else
-                error
-            fi
+            display 'services' "$(systemctl list-units --type=service --state=running --no-pager --quiet | cut -d " " -f 3)" "${!services}"
             ;;
         'users')
-            display 'users' "$(sudo passwd -S -a | awk '$2!="L" {print $1}')" "$users"
+            display 'users' "$(sudo cat /etc/shadow | grep -v '!' | cut -d ':' -f 1)" "$users"
             ;;
         'packages')
-            if [[ "$hostname" == 'bigbang' || "$hostname" == 'chernobyl' ]]; then
+            if [[ "$os" == 'redhat' ]]; then
                 display 'packages' "$(dnf repoquery --userinstalled | cut -d ':' -f 1 | sed 's/..$//')" "${!pkgs}"
-            elif [[ "$hostname" == 'dinoasteroid' || "$hostname" == 'enlightenment' || "$hostname" == 'vikingraids' ]]; then
+            elif [[ "$os" == 'debian' ]]; then
                 display 'packages' "$(apt-mark showmanual)" "${!pkgs}"
             else
                 error
             fi
             ;;
+        'integrity')
+            if [[ "$os" == 'redhat' ]]; then
+                rpm -Va
+            elif [[ "$os" == 'debian' ]]; then
+                debsums
+
+                if [[ "$?" != 0 ]]; then
+                    echo 'debsums not found! Please install it before continuing'
+                fi
+            fi
+            get_key
+            ;;
         'clone')
             header 'cloning..'
             git clone https://github.com/pix-code/pix-code.github.io
-            echo -e '\ndone!\n'
+            echo -e '\ndone!'
             get_key
+            ;;
+        'test')
+            header 'diagnostic info'
+            echo "detected os: $os"
+            echo "detected hostname: $hostname"
+            echo
+            echo 'press m for more'
+            if [[ "$(get_key)" == 'm' ]]; then
+                subh 'user filter'
+                echo "$users"
+                echo
+                subh 'service filter'
+                echo "${!services}"
+                echo
+                subh 'pkg filter'
+                echo "${!pkgs}"
+                get_key
+            fi
             ;;
         'exit')
             header 'HACK THE PLANET'
