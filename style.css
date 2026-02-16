@@ -1,3 +1,4 @@
+/* == GLOBAL == */
 @font-face {
   font-family: "iosevka";
   src: url("iosevka.ttf");
@@ -21,45 +22,8 @@ body {
   background-color: #fdf6e3;
 }
 
-#centered {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-}
-
-#main {
-  display: flex;
-  flex-wrap: wrap;
-  flex-direction: row;
-  gap: 16px;
-}
-
-#left,
-#right {
-  flex: 1 1 320px;
-  min-width: 320px;
-  background-color: #eee8d5;
-  border-width: 1px;
-  border-style: solid;
-  border-color: #93a1a160;
-}
-
-#left {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  border-radius: 6px;
-}
-
-#right {
-  border-radius: 6px;
-}
-
 h3 {
   color: #657b83;
-  text-align: center;
-  font-size: 18px;
 }
 
 a {
@@ -67,16 +31,97 @@ a {
   text-align: center;
   font-weight: bold;
   text-decoration: none;
-  font-size: 14px;
 }
 
 a:hover {
   text-decoration: underline;
-  font-size: 16px;
+  font-size: 1.1rem;
   color: #d33682;
 }
 
-img {
-  border-radius: 4px;
+a:active {
+  font-size: 0.9rem;
 }
 
+img {
+  width: 316px;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #93a1a1e0;
+  border-radius: 8px;
+}
+
+sub {
+  margin-top: 12px;
+  color: #93a1a1;
+}
+
+p {
+  color: #657b83;
+}
+
+.centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  flex-direction: column;
+}
+
+.flex-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: top;
+  gap: 32px;
+  min-height: 18px;
+}
+
+.navbar {
+  display: flex;
+  gap: 40px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.navbar-link {
+  flex: 1 1;
+}
+
+.text-pane,
+.img-pane {
+  flex: 1 1 320px;
+  width: 320px;
+}
+
+.text-pane {
+  display: flex;
+  flex-direction: column;
+}
+
+.left-right {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* == HOME == */
+#home-nav-pane {
+  padding-top: 128px;
+}
+
+#home-site-name {
+  text-align: center;
+}
+
+/* == ABOUT == */
+.about-space {
+  min-height: 20px;
+}
+.about-command {
+  margin: 0px 0px 0.2rem 0.2rem;
+}
+.about-output {
+  margin: 0px 0px 0.1rem 0.1rem;
+}
