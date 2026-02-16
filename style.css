@@ -1,13 +1,20 @@
 /* == GLOBAL == */
 @font-face {
-  font-family: "iosevka";
-  src: url("iosevka.ttf");
+  font-family: 'iosevka';
+  font-display: swap;
+  font-weight: 400;
+  font-stretch: normal;
+  font-style: normal;
+  src: url('iosevka-regular.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: "iosevka";
-  src: url("iosevka-bold.ttf");
-  font-weight: bold;
+  font-family: 'iosevka';
+  font-display: swap;
+  font-weight: 700;
+  font-stretch: normal;
+  font-style: normal;
+  src: url('iosevka-bold.woff2') format('woff2');
 }
 
 html {
@@ -119,9 +126,11 @@ p {
 .about-space {
   min-height: 20px;
 }
+
 .about-command {
   margin: 0px 0px 0.2rem 0.2rem;
 }
+
 .about-output {
   margin: 0px 0px 0.1rem 0.1rem;
 }
