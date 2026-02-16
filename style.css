@@ -80,20 +80,20 @@ p {
   flex-wrap: wrap;
   flex-direction: row;
   align-items: top;
-  gap: 32px;
+  gap: 16px;
   min-height: 18px;
 }
 
 .navbar {
   display: flex;
-  gap: 40px;
+  gap: 36px;
   flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
-  margin-bottom: 12px;
 }
 
 .navbar-link {
+  display: flex;
   flex: 1 1;
 }
 
