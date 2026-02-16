@@ -17,12 +17,8 @@
   src: url('iosevka-bold.woff2') format('woff2');
 }
 
-* {
-  font-family: "iosevka";
-}
-
 html {
-  font-family: "iosevka";
+  font-family: 'iosevka';
   font-size: 1rem;
   display: table;
   margin: auto;
