@@ -1,57 +1,63 @@
 <!DOCTYPE html>
 <html lang="en">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<head>
-  <title>dukebr - home</title>
-  <link rel="stylesheet" href="../style.css">
-</head>
+  <head>
+    <title>dukebr /about</title>
+    <link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="../style.css">
+  </head>
 
-<body>
-  <div class="centered">
-    <div class="navbar">
-      <h3>dukebr.org</h3>
-      <a class="navbar-link" href="../">home</a>
-    </div>
-    <div class="flex-row">
-      <div class="img-pane">
-        <img src="../taipei.webp" alt="Picture of Taipei 101"></img>
+  <body>
+    <div class="centered">
+      <div id="nav">
+        <h3>dukebr.org</h3>
+        <a href="../">/home</a>
+        <a href="../about">/about</a>
+        <a href="../projects">/projects</a>
+        <a href="../publications">/publications</a>
       </div>
-      <div class="text-pane">
-        <div class="inner-text-pane">
-          <h3 class="about-command">$ whoami</h3>
-          <p class="about-output">
-            Duke B.
-            19 years old <br>
-            Computer Science / Cybersecurity <br>
+      <div class="splitbox">
+        <div id="left-box">
+          <img src="../taipei.webp" alt="taipei 101">
+          </img>
+        </div>
+        <div id="right-box">
+          <h2>$ whoami<h2>
+          <p>
+            Duke B. | 19 <br>
+            Computer Science | Cybersecurity <br>
             Rochester Institute of Technology <br>
           </p>
-          <div class="about-space"></div>
-          <h3 class="about-command">$ cat ./clubs</h3>
-          <p class="about-output">
+          <h2>$ cat ./clubs<h2>
+          <p>
             RITSEC<br>
-            Archery Club<br>
             Jam Club<br>
+            Archery Club<br>
           </p>
-          <div class="about-space"></div>
-          <h3 class="about-command">$ cat ./interests</h3>
-          <p class="about-output">
+          <h2>$ cat ./interests<h2>
+          <p>
             Systems Programming<br>
             Vulnerability Research<br>
             Systems Administration<br>
           </p>
-          <div class="about-space"></div>
-          <h3 class="about-command">$ cat ./languages</h3>
-          <p class="about-output">
+          <h2>$ cat ./languages<h2>
+          <p>
             Python<br>
             Java<br>
-            Bash<br>
             C<br>
+            Bash<br>
           </p>
+          <h2>$ cat ./contact<h2>
+            <a href="mailto:dcb4313@rit.edu">[email]</a>
+            <a href="https://github.com/pix-code/">[github]</a>
+            <a href="https://www.linkedin.com/in/duke-br/">[linkedin]</a>
+          </h2>
         </div>
       </div>
+      <sub class="center-text">
+        made with &lt;3
+      </sub>
     </div>
-    <sub>made with &lt;3</sub>
-  </div>
-</body>
-
-<html>
+  </body>
+</html>
